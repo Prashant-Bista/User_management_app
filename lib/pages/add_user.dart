@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:user_management/user_service.dart';
+
+import '../user_model.dart';
 
 class AddUser extends StatefulWidget {
   const AddUser({super.key});
@@ -8,6 +11,12 @@ class AddUser extends StatefulWidget {
 }
 
 class _AddUserState extends State<AddUser> {
+  TextEditingController nameController = TextEditingController();
+  TextEditingController contactController = TextEditingController();
+  TextEditingController descriptionController = TextEditingController();
+  var _userService  = UserService();
+
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +28,7 @@ class _AddUserState extends State<AddUser> {
         child: Column(
           children: [
             SizedBox(height: 20.0,),
-            TextField(
+            TextField(controller: nameController,
               decoration: InputDecoration(
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(10),
@@ -30,6 +39,7 @@ class _AddUserState extends State<AddUser> {
             ),
             SizedBox(height: 20.0,),
             TextField(
+              controller: contactController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -40,6 +50,7 @@ class _AddUserState extends State<AddUser> {
             ),
             SizedBox(height: 20.0,),
             TextField(
+              controller: descriptionController,
               decoration: InputDecoration(
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -52,7 +63,9 @@ class _AddUserState extends State<AddUser> {
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                ElevatedButton(onPressed: (){
+                ElevatedButton(onPressed: () async{
+    saveData();
+
                 }, child: Text("Save")),
                 SizedBox(width: 20.0,),
 
@@ -65,5 +78,15 @@ class _AddUserState extends State<AddUser> {
         ),
       ),
     );
+  }
+  Future saveData()async{
+    var _user = User();
+    _user.name= nameController.text;
+    _user.contact= contactController.text;
+    _user.description= descriptionController.text;
+
+    var result = await _userService.saveUser(_user);
+    Navigator.pop(context,result);
+    print("user added");
   }
 }

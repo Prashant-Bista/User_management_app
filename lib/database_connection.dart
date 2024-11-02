@@ -9,7 +9,7 @@ class DatabaseConnection{
     return database;
   }
   Future<void> _createDatabase(Database database,int version) async{
-    String sql = "CREATE TABLE users(id INTEGER PRIMARY KEY , name TEXT, contact TEXT,description Text ";
+    String sql = "CREATE TABLE users(id INTEGER PRIMARY KEY , name TEXT, contact TEXT,description Text); ";
     await database.execute(sql);
   }
 }
