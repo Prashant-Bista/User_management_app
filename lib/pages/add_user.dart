@@ -15,8 +15,7 @@ class _AddUserState extends State<AddUser> {
   TextEditingController contactController = TextEditingController();
   TextEditingController descriptionController = TextEditingController();
   var _userService  = UserService();
-
-
+  GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -25,56 +24,80 @@ class _AddUserState extends State<AddUser> {
       ),
       body: Container(
         padding: EdgeInsets.all(10.0),
-        child: Column(
-          children: [
-            SizedBox(height: 20.0,),
-            TextField(controller: nameController,
-              decoration: InputDecoration(
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
+        child: Form(
+          key: _formKey,
+          child: Column(
+            children: [
+              SizedBox(height: 20.0,),
+          TextFormField(controller: nameController,
+              validator: (value){
+                if (value!.isEmpty){
+                  return "Please enter your name";
+                }
+              },
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  hintText: "Enter Name",
+                  labelText: "Name"
                 ),
-                hintText: "Enter Name",
-                labelText: "Name"
               ),
-            ),
-            SizedBox(height: 20.0,),
-            TextField(
-              controller: contactController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  hintText: "Enter Contact",
-                  labelText: "Contact"
+              SizedBox(height: 20.0,),
+              TextFormField(
+                controller: contactController,
+                validator: (value){
+                  if (value!.isEmpty){
+                    return "Please enter your Contact";
+                  }
+                  if(!RegExp("[0-9]+").hasMatch(value) || value!.length !=10){
+                    return "Please enter a Valid Contact";
+                  }
+                },
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintText: "Enter Contact",
+                    labelText: "Contact"
+                ),
               ),
-            ),
-            SizedBox(height: 20.0,),
-            TextField(
-              controller: descriptionController,
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  hintText: "Enter Description",
-                  labelText: "Description"
+              SizedBox(height: 20.0,),
+              TextFormField(
+                controller: descriptionController,
+    validator: (value) {
+      if (value!.isEmpty) {
+        return "Please enter your Contact";
+      }
+    },
+                decoration: InputDecoration(
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                    hintText: "Enter Description",
+                    labelText: "Description"
+                ),
               ),
-            ),
-            SizedBox(height: 20.0,),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                ElevatedButton(onPressed: () async{
-    saveData();
+              SizedBox(height: 20.0,),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  ElevatedButton(onPressed: (){
+                   if(_formKey.currentState!.validate()) {
+                     setState(() {
+                       saveData();
+                     });
+                   }
 
-                }, child: Text("Save")),
-                SizedBox(width: 20.0,),
+                  }, child: Text("Save")),
+                  SizedBox(width: 20.0,),
+                  ElevatedButton(onPressed: (){
+                  }, child: Text("Reset")),
+                ],
+              )
 
-                ElevatedButton(onPressed: (){
-                }, child: Text("Reset")),
-              ],
-            )
-
-          ],
+            ],
+          ),
         ),
       ),
     );

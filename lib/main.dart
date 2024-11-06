@@ -24,10 +24,6 @@ class MyApp extends StatelessWidget {
                 backgroundColor: Colors.purple,
               textStyle: TextStyle(color: Colors.white)
             )        ) ,
-        iconButtonTheme: IconButtonThemeData(
-          style: IconButton.styleFrom(
-            backgroundColor: Colors.yellow
-          )        ),
         scaffoldBackgroundColor: Colors.white,
       appBarTheme: AppBarTheme(
         color: Colors.purple,
